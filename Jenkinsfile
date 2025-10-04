@@ -2,10 +2,8 @@ pipeline {
     agent any
 
     environment {
-        // Name of the Docker image you want to build
         DOCKER_IMAGE = "ravindra/orderservice"
-        // Replace with your Docker Hub credentials ID in Jenkins
-        DOCKER_CREDENTIALS = "ravi260"
+        DOCKER_CREDENTIALS = "dockerhub"  // This matches the ID you just created
         GIT_REPO = "https://github.com/Ravi189126/OrderServiceSpringBoot.git"
         GIT_BRANCH = "main"
     }
@@ -36,6 +34,7 @@ pipeline {
                     bat """
                     docker login -u %DOCKER_USER% -p %DOCKER_PASS%
                     docker push %DOCKER_IMAGE%
+                    docker logout
                     """
                 }
             }
