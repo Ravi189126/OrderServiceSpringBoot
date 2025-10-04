@@ -3,7 +3,8 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "ravindra/orderservice"
-        DOCKER_CREDENTIALS = "dockerhub"  // This matches the ID you just created
+        DOCKER_USER = "ravi260"          // Docker Hub username
+        DOCKER_PASS = "Ravindra@2"       // Docker Hub password
         GIT_REPO = "https://github.com/Ravi189126/OrderServiceSpringBoot.git"
         GIT_BRANCH = "main"
     }
@@ -26,17 +27,11 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 echo "Pushing Docker image to Docker Hub..."
-                withCredentials([usernamePassword(
-                    credentialsId: "${DOCKER_CREDENTIALS}",
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )]) {
-                    bat """
+                bat """
                     docker login -u %DOCKER_USER% -p %DOCKER_PASS%
                     docker push %DOCKER_IMAGE%
                     docker logout
-                    """
-                }
+                """
             }
         }
     }
