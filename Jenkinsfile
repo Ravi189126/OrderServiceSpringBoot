@@ -2,36 +2,41 @@ pipeline {
     agent any
 
     environment {
-        // Docker image name
-        DOCKER_IMAGE = "ravindra/demoapp"
-        // Docker Hub credentials ID in Jenkins (optional)
+        // Name of the Docker image you want to build
+        DOCKER_IMAGE = "ravindra/orderservice"
+        // Replace with your Docker Hub credentials ID in Jenkins
         DOCKER_CREDENTIALS = "docker-hub-credentials-id"
+        GIT_REPO = "https://github.com/Ravi189126/OrderServiceSpringBoot.git"
+        GIT_BRANCH = "main"
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                // Pull code from GitHub
-                git branch: 'main', url: 'https://github.com/Ravi189126/OrderServiceSpringBoot.git'
+                echo "Cloning Git repository..."
+                git branch: "${GIT_BRANCH}", url: "${GIT_REPO}"
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    // Build docker image
-                    sh "docker build -t ${DOCKER_IMAGE}:latest ."
-                }
+                echo "Building Docker image..."
+                bat "docker build -t %DOCKER_IMAGE% ."
             }
         }
 
         stage('Push Docker Image') {
             steps {
-                script {
-                    // Login and push to Docker Hub
-                    docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_CREDENTIALS}") {
-                        sh "docker push ${DOCKER_IMAGE}:latest"
-                    }
+                echo "Pushing Docker image to Docker Hub..."
+                withCredentials([usernamePassword(
+                    credentialsId: "${DOCKER_CREDENTIALS}",
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    bat """
+                    docker login -u %DOCKER_USER% -p %DOCKER_PASS%
+                    docker push %DOCKER_IMAGE%
+                    """
                 }
             }
         }
@@ -39,7 +44,7 @@ pipeline {
 
     post {
         success {
-            echo "Docker image built and pushed successfully!"
+            echo "Build and Docker push completed successfully!"
         }
         failure {
             echo "Build failed!"
