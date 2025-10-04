@@ -15,6 +15,6 @@ public class OrderServiceApplication {
 
 	@GetMapping("/orders")
     public String getOrders() {
-        return "List of Orders";
+        return "List of Orders details";
     }
 }
