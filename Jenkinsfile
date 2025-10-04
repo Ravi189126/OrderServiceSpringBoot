@@ -5,7 +5,7 @@ pipeline {
         // Name of the Docker image you want to build
         DOCKER_IMAGE = "ravindra/orderservice"
         // Replace with your Docker Hub credentials ID in Jenkins
-        DOCKER_CREDENTIALS = "docker-hub-credentials-id"
+        DOCKER_CREDENTIALS = "ravi260"
         GIT_REPO = "https://github.com/Ravi189126/OrderServiceSpringBoot.git"
         GIT_BRANCH = "main"
     }
