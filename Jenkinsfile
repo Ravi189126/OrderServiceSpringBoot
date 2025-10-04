@@ -10,7 +10,7 @@ pipeline {
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('Checkout Code ') {
             steps {
                 echo "Cloning Git repository..."
                 git branch: "${GIT_BRANCH}", url: "${GIT_REPO}"
