@@ -12,7 +12,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 // Pull code from GitHub
-                git branch: 'main', url: 'https://github.com/Ravi189126/DemoWithJenking.git'
+                git branch: 'main', url: 'https://github.com/Ravi189126/OrderServiceSpringBoot.git'
             }
         }
 
